@@ -1,0 +1,15 @@
+{
+  "name": "API1",
+  "version": "1.0.0",
+  "description": "Test API1",
+  "main": "server.js",
+  "keywords": [
+    "api",
+    "js"
+  ],
+  "author": "Enrique Nieto",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.5"
+  }
+}
