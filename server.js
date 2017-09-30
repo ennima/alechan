@@ -1,10 +1,41 @@
 var express = require('express');
+var request = require('request');
 var app = express();
+var php_shit_url = "http://localhost/phps/";
+// Esto ayuda a que un HTML externo lo pueda consumir
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 
 app.get('/', function(req, res){
 	res.send("Hola Mundo!");
 });
 
+
+
+
+app.get('/nombre/:id', function(req, res) { 
+       if (!req.params.id) { 
+           res.status(500); 
+           res.send({"Error": "Looks like you are not senging the product id to get the product details."}); 
+           console.log("Looks like you are not senging the product id to get the product detsails."); 
+       } 
+      request.get({ url: php_shit_url+"shitsita.php?nombre=" + req.params.id },      function(error, response, body) { 
+              if (!error && response.statusCode == 200) { 
+                  //res.json(body); 
+                  //console.log(body);
+                  var msg = JSON.parse(body);
+                  console.log(msg.edad-10);
+                  var newJson = {"cupon":msg.edad-10,"acceso":"sexshop","color":msg.color};
+                  res.json(newJson);
+                 } 
+             }); 
+     }); 
+
+
+/////////  Corre una instancia que sirve por http
 app.listen(3000, function(err){
 	if(err){
 		return console.log("Hubo un error");
