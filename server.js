@@ -2,6 +2,41 @@ var express = require('express');
 var request = require('request');
 var app = express();
 var php_shit_url = "http://localhost/phps/";
+
+var sql = require("mssql");
+
+// config for your database
+var config = {
+    user: 'sa',
+    password: 'acca12345',
+    server: 'ENNNIMA-DEV\\SQLEXPRESS', 
+    database: 'SOA' 
+};
+
+    // // connect to your database
+    // sql.connect(config, function (err) {
+    
+    //     if (err) console.log(err);
+
+    //     // create Request object
+    //     var request = new sql.Request();
+           
+    //     // query to the database and get the records
+    //     request.query('select * from usuarios', function (err, recordset) {
+            
+    //         if (err) console.log(err)
+
+    //         // send records as a response
+    //         //res.send(recordset);
+    //         console.log(recordset.rowsAffected);
+    //         sql.close();
+    //     });
+    // });
+
+
+
+
+
 // Esto ayuda a que un HTML externo lo pueda consumir
 app.all('/*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -12,6 +47,39 @@ app.all('/*', function(req, res, next) {
 app.get('/', function(req, res){
 	res.send("Hola Mundo!");
 });
+
+// Prueba si está viendo la base de datos
+app.get('/sql_test', function(req, res){
+    // connect to your database
+    sql.connect(config, function (err) {
+    
+        if (err) console.log(err);
+
+        // create Request object
+        var request = new sql.Request();
+           
+        // query to the database and get the records
+        request.query('select * from usuarios', function (err, recordset) {
+            
+            if (err) console.log(err)
+
+            // send records as a response
+            res.send(recordset);
+            console.log(recordset);
+            sql.close();
+        });
+    });
+
+
+});
+
+
+
+
+
+
+
+
 
 
 
